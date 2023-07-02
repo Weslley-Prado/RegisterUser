@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import "./style.css";
 const AddUser: React.FC = () => {
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
@@ -31,52 +31,47 @@ const AddUser: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h2>Add User</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            Code:
-            <input
-              type="text"
-              value={code}
-              onChange={(event) => setCode(event.target.value)}
-            />
-          </label>
+        <div className="form-group">
+          <label htmlFor="code">Code:</label>
+          <input
+            type="text"
+            id="code"
+            value={code}
+            onChange={(event) => setCode(event.target.value)}
+          />
         </div>
-        <div>
-          <label>
-            Name:
-            <input
-              type="text"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-            />
-          </label>
+        <div className="form-group">
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+          />
         </div>
-        <div>
-          <label>
-            Date of Birth:
-            <input
-              type="text"
-              value={dateOfBirth}
-              onChange={(event) => setDateOfBirth(event.target.value)}
-            />
-          </label>
+        <div className="form-group">
+          <label htmlFor="dateOfBirth">Date of Birth:</label>
+          <input
+            type="text"
+            id="dateOfBirth"
+            value={dateOfBirth}
+            onChange={(event) => setDateOfBirth(event.target.value)}
+          />
         </div>
-        <div>
-          <label>
-            Photo:
-            <input
-              type="file"
-              onChange={(event) => setPhoto(event.target.files?.[0] || null)}
-            />
-          </label>
+        <div className="form-group">
+          <label htmlFor="photo">Photo:</label>
+          <input
+            type="file"
+            id="photo"
+            onChange={(event) => setPhoto(event.target.files?.[0] || null)}
+          />
         </div>
         <button type="submit">Add</button>
       </form>
     </div>
   );
 };
-
 export default AddUser;
