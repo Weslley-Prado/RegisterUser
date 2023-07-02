@@ -9,6 +9,7 @@ public class UserDTO {
     private LocalDate dateOfBirth;
     private String photo;
 
+
     // Construtores
 
     public UserDTO() {
@@ -21,8 +22,12 @@ public class UserDTO {
         this.dateOfBirth = dateOfBirth;
         this.photo = photo;
     }
+    
 
-    // Getters e Setters
+    
+    
+
+	// Getters e Setters
 
     public Long getId() {
         return id;
@@ -63,4 +68,8 @@ public class UserDTO {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
+
+
+    
+    
 }

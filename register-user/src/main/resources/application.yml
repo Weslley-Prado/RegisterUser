@@ -17,3 +17,6 @@ spring:
       max-request-size: 215MB
 
 
+image:
+  path: C:/Users/Public/Pictures/images/
+

@@ -14,6 +14,22 @@ public class UserMapper {
         userDTO.setPhoto(user.getPhoto());
         return userDTO;
     }
+    
+//    public UserDTO convertToDTO(User user) {
+//        UserDTO userDTO = new UserDTO();
+//        userDTO.setId(user.getId());
+//        userDTO.setCode(user.getCode());
+//        userDTO.setName(user.getName());
+//        userDTO.setDateOfBirth(user.getDateOfBirth());
+//        
+//        if (user.getPhoto() != null) {
+//            String imagePath = "/images/" + user.getPhoto();
+//            userDTO.setPhotoUrl(imagePath);
+//        }
+//
+//        return userDTO;
+//    }
+
 
     public static User convertToEntity(UserDTO userDTO) {
         User user = new User();
