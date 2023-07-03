@@ -1,6 +1,6 @@
+
 # Full Stack Register User
 
-[Link da Apresentação do Projeto](https://youtu.be/Jxy9_u4kapo)
 
 ## Estrutura do Projeto
 
@@ -32,6 +32,17 @@ O frontend foi desenvolvido utilizando ReactJS. Ele é responsável pela interfa
 5. Execute o seguinte comando para iniciar o backend:
 
    `mvn spring-boot:run`
+
+#### Script SQL Para Criar o Banco
+`CREATE DATABASE registeruser /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE TABLE user (
+  date_of_birth date DEFAULT NULL,
+  id bigint NOT NULL AUTO_INCREMENT,
+  code varchar(255) DEFAULT NULL,
+  name varchar(255) DEFAULT NULL,
+  photo varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;`
 
 ### Frontend
 
