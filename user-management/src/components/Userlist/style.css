@@ -1,5 +1,5 @@
 .user-list-container {
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -8,13 +8,26 @@
   padding: 0;
 }
 
+.user-list-header {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.user-list-header span {
+  padding-left: 28px;
+}
+
 .user-card {
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 15px;
   border-radius: 8px;
   background-color: #f5f5f5;
   margin-bottom: 10px;
+  width: 100%;
 }
 
 .user-card img {
@@ -27,18 +40,74 @@
 
 .user-card span {
   font-size: 16px;
-  margin-right: 10px;
+  margin-left: 50px;
+  text-decoration: none;
+  color: #000;
+}
+
+.no-underscore{
+  text-decoration: none!important;
+  text-decoration-line: none;
+
+}
+.link-style {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+.user-card-buttons {
+  margin-left: auto;
 }
 
 .user-card button {
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.edit-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+}
+
+.delete-button {
   background-color: #f44336;
+  color: white;
+  border: none;
+}
+
+.edit-button:hover {
+  background-color: #45a049;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  background-color: #656565;
   color: white;
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
   cursor: pointer;
+  margin: 0 5px;
 }
 
-.user-card button:hover {
+.pagination button:hover {
   background-color: #d32f2f;
+}
+
+.page-number {
+  font-weight: bold;
+  margin: 0 10px;
 }
