@@ -75,7 +75,7 @@ const AddUser: React.FC = () => {
       <h2>Cadastrar Usuário</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="code">Code:</label>
+          <label htmlFor="code">Código:</label>
           <input
             type="text"
             id="code"

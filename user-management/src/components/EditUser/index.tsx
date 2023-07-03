@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { format, parse, addDays } from "date-fns";
+import { parseISO, format } from "date-fns";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./style.css";
+import { convertDateFormat } from "../AddUser";
 
 interface User {
   id: number;
@@ -14,22 +15,32 @@ interface User {
   photo: string;
 }
 
-const convertDateFormat = (dateString: string) => {
-  const parsedDate = parse(dateString, "dd/MM/yyyy", new Date());
-  return format(parsedDate, "yyyy-MM-dd");
-};
-
 const EditUser: React.FC = () => {
   const { id } = useParams();
   const [user, setUser] = useState<User | null>(null);
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
+  const [formattedDateOfBirth, setFormattedDateOfBirth] = useState("");
   const [photo, setPhoto] = useState<File | null>(null);
   const navigate = useNavigate();
 
   const apiUrl =
     process.env.REACT_APP_API_BASE_URL || "http://localhost:8080/api/v1";
+
+  const formatDateString = (value: string) => {
+    const dateNumbers = value.replace(/\D/g, "").substring(0, 8);
+    if (dateNumbers.length >= 5) {
+      return `${dateNumbers.substring(0, 2)}/${dateNumbers.substring(
+        2,
+        4
+      )}/${dateNumbers.substring(4, 8)}`;
+    } else if (dateNumbers.length >= 3) {
+      return `${dateNumbers.substring(0, 2)}/${dateNumbers.substring(2, 4)}`;
+    } else {
+      return dateNumbers;
+    }
+  };
 
   useEffect(() => {
     axios
@@ -39,7 +50,9 @@ const EditUser: React.FC = () => {
         setUser(userData);
         setCode(userData.code);
         setName(userData.name);
-        setDateOfBirth(userData.dateOfBirth);
+        setFormattedDateOfBirth(
+          format(parseISO(userData.dateOfBirth), "dd/MM/yyyy")
+        );
         setPhoto(null);
       })
       .catch((error) => {
@@ -57,20 +70,17 @@ const EditUser: React.FC = () => {
   const handleDateOfBirthChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const enteredDate = event.target.value;
-    const formattedDate = enteredDate
-      .replace(/\//g, "")
-      .replace(/(\d{2})(\d)/, "$1/$2")
-      .replace(/(\d{2})(\d)/, "$1/$2");
+    const formattedDate = formatDateString(event.target.value);
     setDateOfBirth(formattedDate);
   };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    console.log(dateOfBirth);
     const formData = new FormData();
     formData.append("code", code);
     formData.append("name", name);
-    formData.append("dateOfBirth", dateOfBirth);
+    formData.append("dateOfBirth", convertDateFormat(dateOfBirth));
     if (photo) {
       formData.append("photo", photo);
     }
@@ -94,11 +104,6 @@ const EditUser: React.FC = () => {
   if (!user) {
     return <div>Loading...</div>;
   }
-
-  const formattedDate = addDays(
-    new Date(user.dateOfBirth),
-    1
-  ).toLocaleDateString("pt-BR");
 
   return (
     <div className="container">
@@ -150,11 +155,13 @@ const EditUser: React.FC = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="dateOfBirth">Data de Nascimento:</label>
+          <label htmlFor="dateOfBirth">
+            Data de Nascimento:{formattedDateOfBirth}
+          </label>
           <input
             id="dateOfBirth"
             type="text"
-            value={formattedDate}
+            value={dateOfBirth}
             onChange={handleDateOfBirthChange}
           />
         </div>
