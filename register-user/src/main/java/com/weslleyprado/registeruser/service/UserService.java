@@ -87,41 +87,40 @@ public class UserService {
     }
 
 	public UserDTO updateUser(Long id, UserDTO userDTO, MultipartFile photo) {
-		User existingUser = userRepository.findById(id)
-				.orElseThrow(() -> new NoSuchElementException("User not found"));
+	    User existingUser = userRepository.findById(id)
+	            .orElseThrow(() -> new NoSuchElementException("User not found"));
 
-		existingUser.setCode(userDTO.getCode());
-		existingUser.setName(userDTO.getName());
-		existingUser.setDateOfBirth(userDTO.getDateOfBirth());
+	    existingUser.setCode(userDTO.getCode());
+	    existingUser.setName(userDTO.getName());
+	    existingUser.setDateOfBirth(userDTO.getDateOfBirth());
 
-		try {
-			if (photo != null && !photo.isEmpty()) {
-				String photoDirectory = "C:/images";
-				File directory = new File(photoDirectory);
-				if (!directory.exists()) {
-					directory.mkdirs();
-				}
+	    try {
+	        if (photo != null && !photo.isEmpty()) {
+	            // Deleta a foto existente, se houver
+	            String existingPhotoPath = existingUser.getPhoto();
+	            if (existingPhotoPath != null && !existingPhotoPath.isEmpty()) {
+	                File existingPhotoFile = new File(existingPhotoPath);
+	                existingPhotoFile.delete();
+	            }
 
-				// Deleta a foto existente, se houver
-				String existingPhotoPath = existingUser.getPhoto();
-				if (existingPhotoPath != null && !existingPhotoPath.isEmpty()) {
-					File existingPhotoFile = new File(existingPhotoPath);
-					existingPhotoFile.delete();
-				}
+	            String fileName = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
+	            File file = new File(imagePath, fileName);
+	            photo.transferTo(file);
 
-				String fileName = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
-				File file = new File(directory, fileName);
-				photo.transferTo(file);
+	            // Obter o caminho relativo da imagem
+	            String relativeImagePath = "images/" + fileName;
 
-				existingUser.setPhoto(file.getAbsolutePath());
-			}
+	            existingUser.setPhoto(relativeImagePath);
+	        }
 
-			User savedUser = userRepository.save(existingUser);
-			return UserMapper.convertToDTO(savedUser);
-		} catch (IOException e) {
-			throw new RuntimeException("Failed to process the photo file.");
-		}
+	        User savedUser = userRepository.save(existingUser);
+	        return UserMapper.convertToDTO(savedUser);
+	    } catch (IOException e) {
+	        throw new RuntimeException("Failed to process the photo file.");
+	    }
 	}
+
+
 
 	public void deleteUser(Long id) {
 		User existingUser = userRepository.findById(id)

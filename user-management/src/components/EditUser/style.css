@@ -1,0 +1,81 @@
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Centralizar todo o conteúdo na horizontal */
+}
+
+.title {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.user-photo {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 16px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin: 0 auto; /* Centralizar a foto na horizontal */
+}
+
+.photo-label {
+  display: inline-block;
+  position: relative;
+}
+
+.file-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #fca311;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#photo {
+  display: none;
+}
+
+.save-button {
+  background-color: #fca311;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 16px;
+}
+.user-photo {
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: contain;
+}
+
+.preview-photo {
+  margin-bottom: 10px;
+}

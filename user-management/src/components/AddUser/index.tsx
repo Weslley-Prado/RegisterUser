@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
+
 const AddUser: React.FC = () => {
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
@@ -21,7 +22,11 @@ const AddUser: React.FC = () => {
     }
 
     axios
-      .post("http://localhost:8080/api/v1/users", formData)
+      .post("http://localhost:8080/api/v1/users", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         navigate("/users");
       })
@@ -63,15 +68,23 @@ const AddUser: React.FC = () => {
         </div>
         <div className="form-group">
           <label htmlFor="photo">Photo:</label>
-          <input
-            type="file"
-            id="photo"
-            onChange={(event) => setPhoto(event.target.files?.[0] || null)}
-          />
+          <div className="add-photo-button">
+            <label htmlFor="photo" className="add-photo-label">
+              Choose Photo
+            </label>
+            <input
+              type="file"
+              id="photo"
+              onChange={(event) => setPhoto(event.target.files?.[0] || null)}
+            />
+            {photo && <span>{photo.name}</span>}
+          </div>
         </div>
-        <button type="submit">Add</button>
+
+        <button type="submit">Criar usuário</button>
       </form>
     </div>
   );
 };
+
 export default AddUser;

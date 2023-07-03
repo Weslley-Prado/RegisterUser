@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.weslleyprado.registeruser.dto.UserDTO;
 import com.weslleyprado.registeruser.service.UserService;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {

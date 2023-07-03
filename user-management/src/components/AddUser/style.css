@@ -49,3 +49,19 @@ button {
     font-size: 14px;
   }
 }
+
+/* Novo estilo para o botão de adicionar foto */
+
+
+.add-photo-button label {
+  background-color: #a5a5a5;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-photo-button span {
+  margin-left: 10px;
+}
+
