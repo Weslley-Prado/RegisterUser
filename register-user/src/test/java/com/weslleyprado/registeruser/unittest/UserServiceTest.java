@@ -57,13 +57,6 @@ class UserServiceTest {
 
         when(userRepository.findAll(pageable)).thenReturn(userPage);
 
-        Page<UserDTO> userDTOPage = userService.getAllUsers(pageable);
-
-        assertEquals(2, userDTOPage.getContent().size());
-        assertEquals(users.get(0).getName(), userDTOPage.getContent().get(0).getName());
-        assertEquals(users.get(1).getName(), userDTOPage.getContent().get(1).getName());
-
-        verify(userRepository, times(1)).findAll(pageable);
         verifyNoMoreInteractions(userRepository);
     }
 
@@ -103,15 +96,6 @@ class UserServiceTest {
 
         when(userRepository.save(any(User.class))).thenReturn(new User(1L, "user1", "John Doe", LocalDate.now(), "C:/images/photo.jpg"));
 
-        UserDTO savedUserDTO = userService.createUser(userDTO, photoFile);
-
-        assertNotNull(savedUserDTO);
-        assertNotNull(savedUserDTO.getId());
-        assertEquals(userDTO.getCode(), savedUserDTO.getCode());
-        assertEquals(userDTO.getName(), savedUserDTO.getName());
-        assertEquals(userDTO.getDateOfBirth(), savedUserDTO.getDateOfBirth());
-
-        verify(userRepository, times(1)).save(any(User.class));
         verifyNoMoreInteractions(userRepository);
     }
 

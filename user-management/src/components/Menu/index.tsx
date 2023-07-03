@@ -9,10 +9,10 @@ export default function Menu() {
       <nav>
         <ul>
           <li>
-            <Link to="/users">Registro de usuários</Link>
+            <Link to="/users">Registro de Usuários</Link>
           </li>
           <li>
-            <Link to="/users/add">Cadastrar usuário</Link>
+            <Link to="/users/add">Formulário de Cadastro</Link>
           </li>
         </ul>
       </nav>

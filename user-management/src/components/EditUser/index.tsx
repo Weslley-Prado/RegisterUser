@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import "./style.css"; // Importe o arquivo CSS
+import { format, parse, addDays } from "date-fns";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./style.css";
 
 interface User {
   id: number;
@@ -10,6 +13,11 @@ interface User {
   dateOfBirth: string;
   photo: string;
 }
+
+const convertDateFormat = (dateString: string) => {
+  const parsedDate = parse(dateString, "dd/MM/yyyy", new Date());
+  return format(parsedDate, "yyyy-MM-dd");
+};
 
 const EditUser: React.FC = () => {
   const { id } = useParams();
@@ -20,9 +28,12 @@ const EditUser: React.FC = () => {
   const [photo, setPhoto] = useState<File | null>(null);
   const navigate = useNavigate();
 
+  const apiUrl =
+    process.env.REACT_APP_API_BASE_URL || "http://localhost:8080/api/v1";
+
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/v1/users/${id}`)
+      .get(`${apiUrl}/users/${id}`)
       .then((response) => {
         const userData = response.data;
         setUser(userData);
@@ -43,9 +54,19 @@ const EditUser: React.FC = () => {
     }
   };
 
+  const handleDateOfBirthChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const enteredDate = event.target.value;
+    const formattedDate = enteredDate
+      .replace(/\//g, "")
+      .replace(/(\d{2})(\d)/, "$1/$2")
+      .replace(/(\d{2})(\d)/, "$1/$2");
+    setDateOfBirth(formattedDate);
+  };
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
     const formData = new FormData();
     formData.append("code", code);
     formData.append("name", name);
@@ -55,12 +76,18 @@ const EditUser: React.FC = () => {
     }
 
     axios
-      .put(`http://localhost:8080/api/v1/users/${id}`, formData)
+      .put(`${apiUrl}/users/${id}`, formData)
       .then((response) => {
-        navigate("/users");
+        toast.success("Usuário atualizado com sucesso!");
+        setTimeout(() => {
+          navigate("/users");
+        }, 2000);
       })
       .catch((error) => {
         console.error("Error updating user:", error);
+        toast.error(
+          "Não foi possível atualizar o usuário. Por favor, tente novamente."
+        );
       });
   };
 
@@ -68,9 +95,15 @@ const EditUser: React.FC = () => {
     return <div>Loading...</div>;
   }
 
+  const formattedDate = addDays(
+    new Date(user.dateOfBirth),
+    1
+  ).toLocaleDateString("pt-BR");
+
   return (
     <div className="container">
-      <h2 className="title">Edit User</h2>
+      <h2 className="title">Atualizar Usuário</h2>
+      <ToastContainer />
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="photo" className="photo-label">
@@ -99,7 +132,7 @@ const EditUser: React.FC = () => {
           </label>
         </div>
         <div className="form-group">
-          <label htmlFor="code">Code:</label>
+          <label htmlFor="code">Código:</label>
           <input
             id="code"
             type="text"
@@ -108,7 +141,7 @@ const EditUser: React.FC = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">Nome:</label>
           <input
             id="name"
             type="text"
@@ -117,12 +150,12 @@ const EditUser: React.FC = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="dateOfBirth">Date of Birth:</label>
+          <label htmlFor="dateOfBirth">Data de Nascimento:</label>
           <input
             id="dateOfBirth"
             type="text"
-            value={dateOfBirth}
-            onChange={(event) => setDateOfBirth(event.target.value)}
+            value={formattedDate}
+            onChange={handleDateOfBirthChange}
           />
         </div>
 

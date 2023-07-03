@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { addDays } from "date-fns";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./style.css";
 
 interface User {
@@ -19,6 +22,9 @@ const UserList: React.FC = () => {
   const [usersPerPage] = useState(4);
   const navigate = useNavigate();
 
+  const apiUrl =
+    process.env.REACT_APP_API_BASE_URL || "http://localhost:8080/api/v1";
+
   useEffect(() => {
     fetchUsers();
   }, [currentPage]);
@@ -26,7 +32,7 @@ const UserList: React.FC = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/users?page=${currentPage}&size=${usersPerPage}`
+        `${apiUrl}/users?page=${currentPage}&size=${usersPerPage}`
       );
       setUsers(response.data.content);
       setTotalPages(response.data.totalPages);
@@ -37,10 +43,14 @@ const UserList: React.FC = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/users/${id}`);
+      await axios.delete(`${apiUrl}/users/${id}`);
       setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+      toast.info("Usuário deletado com sucesso!");
     } catch (error) {
       console.error("Error deleting user:", error);
+      toast.error(
+        "Não foi possível deletar o usuário. Por favor, tente novamente."
+      );
     }
   };
 
@@ -76,7 +86,9 @@ const UserList: React.FC = () => {
               <span className="no-underscore">{user.code}</span>
               <span className="no-underscore">{user.name}</span>
               <span className="no-underscore">
-                {new Date(user.dateOfBirth).toLocaleDateString("pt-BR")}
+                {addDays(new Date(user.dateOfBirth), 1).toLocaleDateString(
+                  "pt-BR"
+                )}
               </span>
               <div className="user-card-buttons">
                 <button
@@ -106,6 +118,8 @@ const UserList: React.FC = () => {
           Next
         </button>
       </div>
+
+      <ToastContainer />
     </div>
   );
 };
